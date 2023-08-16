@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // ================= Widget Use Colors // Compulsory ======================
 
-const colorPrimary = Color(0xff5fdeff);
+const colorPrimary = Colors.teal;
 const textColorPrimary = Color(0xFF252525);
 const textGreenColor = Color(0xFF00c97b);
 const textColorSecondary = Color.fromARGB(255, 37, 133, 244);

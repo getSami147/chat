@@ -2,8 +2,6 @@ import 'package:chat/utils/colors.dart';
 import 'package:chat/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../Utils/Widget.dart';
 import 'chatModel.dart';
@@ -17,10 +15,10 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
-  final WebSocketChannel channel = IOWebSocketChannel.connect(
-    // "wss://socketsbay.com/wss/v2/1/demo/"
-    'ws://192.168.100.9:4000',
-  );
+  // final WebSocketChannel channel; = IOWebSocketChannel.connect(
+  //   // "wss://socketsbay.com/wss/v2/1/demo/"
+  //   'ws://192.168.100.9:4000',
+  // );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +50,6 @@ class _ChatState extends State<Chat> {
                     onTap: () {
                       Sms(
                         name: chat2Model[index].name.toString(),
-                        channel: channel,
                       ).launch(context);
                     },
                     child: ListTile(
@@ -77,8 +74,7 @@ class _ChatState extends State<Chat> {
                             height: 20,
                             width: 20,
                             decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xff7ce0ff)),
+                                shape: BoxShape.circle, color: colorPrimary),
                             child: const Padding(
                               padding: EdgeInsets.only(left: 6, top: 1),
                               child: Text(
