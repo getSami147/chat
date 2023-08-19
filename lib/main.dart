@@ -4,10 +4,6 @@ import 'package:chat/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-
-import 'auth/welcome.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,7 +35,7 @@ class MyApp extends StatelessWidget {
                 )),
             colorScheme: ColorScheme.fromSeed(seedColor: colorPrimary),
             useMaterial3: true),
-        home: Chat(),
+        home: const Chat(),
       ),
     );
   }
