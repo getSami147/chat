@@ -26,10 +26,12 @@ class _SmsState extends State<Sms> {
   @override
   void initState() {
     super.initState();
-    channel = IOWebSocketChannel.connect(Uri.parse(
-      'ws://192.168.100.10:4000',
-      // "wss://socketsbay.com/wss/v2/1/demo/"
-    ));
+    channel = IOWebSocketChannel.connect(
+      Uri.parse(
+          // 'ws://192.168.100.10:4000',
+          // 'wss://echo.websocket.events'
+          "wss://socketsbay.com/wss/v2/1/demo/"),
+    );
   }
 
   final messageController = TextEditingController();
@@ -83,105 +85,96 @@ class _SmsState extends State<Sms> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: StreamBuilder(
-              stream: channel.stream,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
-                } else if (snapshot.hasData) {
-                  return SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // ListView.builder(
-                        //   shrinkWrap: true,
-                        //   itemCount: snapshot.data.length,
-                        //   itemBuilder: (context, index) {
-                        // return
-                        text(snapshot.hasData
-                            ? "Receive:  ${snapshot.data}"
-                            : ''),
-                        //   },
-                        // )
-                      ],
-                    ).paddingAll(20),
-                  );
-                } else {
-                  return Center(
-                    child: text("Connecting...",
-                        textColor: Colors.grey, fontSize: textSizeSMedium),
-                  );
-                }
-              },
-            ),
-          ),
+              child: StreamBuilder(
+            stream: channel.stream,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasError) {
+                return Text(snapshot.error.toString());
+              } else if (snapshot.hasData) {
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ListView.builder(
+                      //   shrinkWrap: true,
+                      //   itemCount: snapshot.data.length,
+                      //   itemBuilder: (context, index) {
+                      // return
+                      text(
+                          snapshot.hasData ? "Receive:  ${snapshot.data}" : ''),
+                      //   },
+                      // )
+                    ],
+                  ).paddingAll(20),
+                );
+              } else {
+                return Center(
+                  child: text(
+                      snapshot.hasData ? "Receive:  ${snapshot.data}" : '',
+                      textColor: Colors.grey,
+                      fontSize: textSizeSMedium),
+                );
+              }
+            },
+          )),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: colorPrimary,
-                        borderRadius: BorderRadius.circular(30)),
-                    width: MediaQuery.of(context).size.width - 75,
-                    child: TextFormField(
-                      controller: messageController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      minLines: 1,
-                      textAlignVertical: TextAlignVertical.center,
-                      decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white70,
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(20)),
-                          prefixIcon: IconButton(
+              Expanded(
+                child: TextFormField(
+                  controller: messageController,
+                  keyboardType: TextInputType.multiline,
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: colorPrimary.withOpacity(.3),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(30)),
+                      prefixIcon: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.emoji_emotions,
+                          color: colorPrimary,
+                        ),
+                      ),
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
                             onPressed: () {},
                             icon: const Icon(
-                              Icons.emoji_emotions,
+                              Icons.attach_file_rounded,
                               color: colorPrimary,
                             ),
                           ),
-                          suffixIcon: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.attach_file_rounded,
-                                  color: colorPrimary,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.camera,
-                                  color: colorPrimary,
-                                ),
-                              )
-                            ],
-                          ),
-                          hintText: 'Message'),
-                    )),
-              ),
-              SizedBox(
-                height: 45,
-                width: 45,
-                child: FloatingActionButton(
-                  backgroundColor: colorPrimary,
-                  tooltip: "Send Message",
-                  onPressed: () {
-                    sendMyMessage();
-                    print(messageController.text);
-                    _clearInput();
-                  },
-                  child: const Icon(Icons.send),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.camera,
+                              color: colorPrimary,
+                            ),
+                          )
+                        ],
+                      ),
+                      hintText: 'Message'),
                 ),
-              )
+              ),
+              FloatingActionButton(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                backgroundColor: colorPrimary.withOpacity(.3),
+                tooltip: "Send Message",
+                onPressed: () {
+                  sendMyMessage();
+                  // print(messageController.text);
+                  _clearInput();
+                },
+                child: const Icon(Icons.send),
+              ).paddingLeft(5)
             ],
-          ),
+          ).paddingSymmetric(horizontal: 20).paddingBottom(5),
         ],
       ),
     );
